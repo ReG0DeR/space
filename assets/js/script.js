@@ -1,0 +1,276 @@
+(function () {
+    "use strict";
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        2000,
+    );
+
+    camera.position.set(10, 4, 12);
+    const finalPos = new THREE.Vector3(0, 0, 6);
+
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        precision: "highp",
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.minDistance = 1.2;
+    controls.maxDistance = 15;
+    controls.enablePan = false;
+    controls.enabled = false;
+
+    const lightPos = new THREE.Vector3(100, 60, 100);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    sunLight.position.copy(lightPos);
+    sunLight.castShadow = true;
+    sunLight.shadow.camera.left = -5;
+    sunLight.shadow.camera.right = 5;
+    sunLight.shadow.camera.top = 5;
+    sunLight.shadow.camera.bottom = -5;
+    sunLight.shadow.mapSize.set(1024, 1024);
+    scene.add(sunLight);
+
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    fillLight.position.copy(lightPos);
+    scene.add(fillLight);
+    scene.add(new THREE.AmbientLight(0x050505));
+
+    function createGlow(colorStr) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext("2d");
+        const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+        g.addColorStop(0, colorStr);
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, 128, 128);
+        return new THREE.CanvasTexture(canvas);
+    }
+
+    const sunSprite = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+            map: createGlow("rgba(255,255,255,1)"),
+            blending: THREE.AdditiveBlending,
+        }),
+    );
+    sunSprite.scale.set(20, 20, 1);
+    sunSprite.position.copy(lightPos);
+    scene.add(sunSprite);
+
+    const halo = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+            map: createGlow("rgba(70,150,255,0.4)"),
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+        }),
+    );
+    halo.scale.set(2.65, 2.65, 1);
+    scene.add(halo);
+
+    // const loader = new THREE.TextureLoader();
+    // const p =
+    //   "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/";
+    // const tex = {
+    //   map: loader.load(p + "earth_atmos_2048.jpg"),
+    //   clouds: loader.load(p + "earth_clouds_1024.png"),
+    //   moon: loader.load(p + "moon_1024.jpg"),
+    //   norm: loader.load(p + "earth_normal_2048.jpg"),
+    //   spec: loader.load(p + "earth_specular_2048.jpg"),
+    //   lights: loader.load(p + "earth_lights_2048.png"),
+    // };
+    const loader = new THREE.TextureLoader();
+    const p =
+        "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/";
+
+    const tex = {
+        map: loader.load(p + "earth_atmos_2048.jpg"), // Робоча 2K
+        clouds: loader.load(p + "earth_clouds_1024.png"), // Хмари в репо тільки 1K (але ми їх дублюємо)
+        norm: loader.load(p + "earth_normal_2048.jpg"), // Робоча 2K
+        spec: loader.load(p + "earth_specular_2048.jpg"), // Робоча 2K
+        lights: loader.load(p + "earth_lights_2048.png"), // Робоча 2K
+        moon: loader.load(p + "moon_1024.jpg"), // Робоча 1K
+    };
+
+    // ХАК ДЛЯ ЧІТКОСТІ:
+    // Щоб 2K виглядала як 4K, додаємо анізотропну фільтрацію
+    Object.values(tex).forEach((t) => {
+        t.anisotropy = 16; // Витискаємо максимум чіткості з того що є
+    });
+
+    const earth = new THREE.Mesh(
+        new THREE.SphereGeometry(1, 48, 48),
+        new THREE.MeshPhongMaterial({
+            map: tex.map,
+            normalMap: tex.norm,
+            specularMap: tex.spec,
+            shininess: 15,
+        }),
+    );
+    earth.receiveShadow = true;
+    earth.castShadow = true;
+    scene.add(earth);
+
+    const createClouds = (radius, opacity) => {
+        const mat = new THREE.MeshPhongMaterial({
+            map: tex.clouds,
+            transparent: true,
+            opacity: opacity,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+        });
+        const mesh = new THREE.Mesh(
+            new THREE.SphereGeometry(radius, 32, 32),
+            mat,
+        );
+        mesh.castShadow = true;
+        mesh.customDepthMaterial = new THREE.MeshDepthMaterial({
+            depthPacking: THREE.RGBADepthPacking,
+            map: tex.clouds,
+            alphaTest: 0.1,
+            side: THREE.DoubleSide,
+        });
+        return mesh;
+    };
+
+    const clouds1 = createClouds(1.03, 0.8);
+    const clouds2 = createClouds(1.045, 0.3);
+    scene.add(clouds1, clouds2);
+
+    const nightMat = new THREE.ShaderMaterial({
+        uniforms: {
+            nightMap: { value: tex.lights },
+            sunDir: { value: lightPos.clone().normalize() },
+            time: { value: 0 },
+        },
+        vertexShader: `varying vec2 vUv;varying vec3 vNormalWorld;void main(){vUv=uv;vNormalWorld=normalize(mat3(modelMatrix)*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+        fragmentShader: `uniform sampler2D nightMap;uniform vec3 sunDir;uniform float time;varying vec2 vUv;varying vec3 vNormalWorld;void main(){vec3 color=texture2D(nightMap,vUv).rgb;float intensity=dot(normalize(vNormalWorld),sunDir);float mask=smoothstep(0.2,-0.4,intensity);float flicker=1.0+0.12*sin(time*1.2+vUv.x*8.0);gl_FragColor=vec4(color*mask*flicker,mask);}`,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+    });
+    earth.add(
+        new THREE.Mesh(new THREE.SphereGeometry(1.002, 48, 48), nightMat),
+    );
+
+    const moon = new THREE.Mesh(
+        new THREE.SphereGeometry(0.27, 32, 32),
+        new THREE.MeshPhongMaterial({ map: tex.moon, shininess: 0 }),
+    );
+    moon.castShadow = true;
+    moon.receiveShadow = true;
+    scene.add(moon);
+
+    const starCount = 10000;
+    const starsPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+        const r = 400 + Math.random() * 100;
+        const t = Math.random() * Math.PI * 2;
+        const p2 = Math.acos(Math.random() * 2 - 1);
+        starsPos[i * 3] = r * Math.sin(p2) * Math.cos(t);
+        starsPos[i * 3 + 1] = r * Math.sin(p2) * Math.sin(t);
+        starsPos[i * 3 + 2] = r * Math.cos(p2);
+    }
+    const starsGeo = new THREE.BufferGeometry();
+    starsGeo.setAttribute(
+        "position",
+        new THREE.BufferAttribute(starsPos, 3),
+    );
+    scene.add(
+        new THREE.Points(
+            starsGeo,
+            new THREE.PointsMaterial({
+                size: 0.7,
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.8,
+            }),
+        ),
+    );
+
+    const clock = new THREE.Clock();
+    let introActive = true;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        const elapsed = clock.getElapsedTime();
+
+        if (introActive) {
+            camera.position.lerp(finalPos, 0.04);
+            camera.lookAt(0, 0, 0);
+            if (camera.position.distanceTo(finalPos) < 0.01) {
+                camera.position.copy(finalPos);
+                controls.enabled = true;
+                introActive = false;
+            }
+        }
+
+        nightMat.uniforms.time.value = elapsed;
+
+        earth.rotation.y = elapsed * 0.05;
+        clouds1.rotation.y = elapsed * 0.06;
+        clouds2.rotation.y = elapsed * 0.07;
+
+        const moonAngle = elapsed * 0.1;
+        moon.position.set(
+            Math.cos(moonAngle) * 5,
+            0,
+            Math.sin(moonAngle) * 5,
+        );
+        moon.lookAt(earth.position);
+
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // --- ОБРОБКА ПОДІЙ ТА ОЧИЩЕННЯ ---
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    const onWindowResize = () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    window.addEventListener("resize", debounce(onWindowResize, 150));
+
+    function disposeScene() {
+        scene.traverse((object) => {
+            if (object.isMesh) {
+                object.geometry.dispose();
+                if (Array.isArray(object.material)) {
+                    object.material.forEach((material) => material.dispose());
+                } else {
+                    object.material.dispose();
+                }
+            }
+        });
+        renderer.dispose();
+    }
+
+    window.addEventListener("beforeunload", disposeScene);
+})();
