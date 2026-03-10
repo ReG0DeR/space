@@ -10,3 +10,125 @@ canvas {
     left: 0;
     z-index: -1;
 }
+// Змінні для швидкого налаштування
+$glass-bg: rgba(255, 255, 255, 0.03);
+$glass-border: rgba(255, 255, 255, 0.08);
+$primary-gradient: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+$accent-red: #ff416c;
+$dark-bg: #050509;
+
+.liquid-hero {
+    margin: 20px;
+    padding: 40px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    font-family: "Poppins", sans-serif;
+    .glass-container {
+        position: relative;
+        width: 90%;
+        max-width: 600px;
+        background: $glass-bg;
+        border-radius: 30px;
+        padding: 60px;
+        display: grid;
+        gap: 40px;
+        backdrop-filter: blur(10px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid $glass-border;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        overflow: hidden;
+        z-index: 2;
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.5;
+            z-index: -1;
+            transition: all 0.5s ease-in-out;
+        }
+        &::before {
+            width: 200px;
+            height: 200px;
+            background: $accent-red;
+            top: -50px;
+            right: -50px;
+        }
+        &::after {
+            width: 150px;
+            height: 150px;
+            background: #4facfe;
+            bottom: -30px;
+            left: -30px;
+        }
+        &:hover {
+            &::before {
+                transform: scale(1.2) translate(10px, -10px);
+                filter: blur(40px);
+            }
+            &::after {
+                transform: scale(1.2) translate(-10px, 10px);
+                filter: blur(40px);
+            }
+        }
+    }
+    .glass-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            .highlight {
+                background: $primary-gradient;
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+        }
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+    }
+    .hero-btns {
+        display: flex;
+        gap: 20px;
+        .btn-primary,
+        .btn-secondary {
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: $primary-gradient;
+            color: $dark-bg;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+            }
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+}

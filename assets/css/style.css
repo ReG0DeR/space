@@ -11,3 +11,116 @@ canvas {
   left: 0;
   z-index: -1;
 }
+
+.liquid-hero {
+  margin: 20px;
+  padding: 40px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+}
+.liquid-hero .glass-container {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 30px;
+  padding: 60px;
+  display: grid;
+  gap: 40px;
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  overflow: hidden;
+  z-index: 2;
+}
+.liquid-hero .glass-container::before, .liquid-hero .glass-container::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(30px);
+  opacity: 0.5;
+  z-index: -1;
+  transition: all 0.5s ease-in-out;
+}
+.liquid-hero .glass-container::before {
+  width: 200px;
+  height: 200px;
+  background: #ff416c;
+  top: -50px;
+  right: -50px;
+}
+.liquid-hero .glass-container::after {
+  width: 150px;
+  height: 150px;
+  background: #4facfe;
+  bottom: -30px;
+  left: -30px;
+}
+.liquid-hero .glass-container:hover::before {
+  transform: scale(1.2) translate(10px, -10px);
+  filter: blur(40px);
+}
+.liquid-hero .glass-container:hover::after {
+  transform: scale(1.2) translate(-10px, 10px);
+  filter: blur(40px);
+}
+.liquid-hero .glass-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.liquid-hero .glass-content .hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+.liquid-hero .glass-content .hero-title .highlight {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.liquid-hero .glass-content .hero-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+.liquid-hero .hero-btns {
+  display: flex;
+  gap: 20px;
+}
+.liquid-hero .hero-btns .btn-primary,
+.liquid-hero .hero-btns .btn-secondary {
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+.liquid-hero .hero-btns .btn-primary {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  color: #050509;
+  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+}
+.liquid-hero .hero-btns .btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+}
+.liquid-hero .hero-btns .btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.liquid-hero .hero-btns .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
