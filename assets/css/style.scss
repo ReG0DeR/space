@@ -1,3 +1,5 @@
+@use "reset";
+
 body {
     margin: 0;
     background: black;
@@ -8,7 +10,6 @@ canvas {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: -1;
 }
 // Змінні для швидкого налаштування
 $glass-bg: rgba(255, 255, 255, 0.03);
@@ -18,17 +19,15 @@ $accent-red: #ff416c;
 $dark-bg: #050509;
 
 .liquid-hero {
-    margin: 20px;
     padding: 40px;
     position: relative;
-    width: 100%;
     display: flex;
     align-items: center;
     overflow: hidden;
     font-family: "Poppins", sans-serif;
+    width: fit-content;
     .glass-container {
         position: relative;
-        width: 90%;
         max-width: 600px;
         background: $glass-bg;
         border-radius: 30px;
@@ -80,12 +79,12 @@ $dark-bg: #050509;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        gap: 20px;
         .hero-title {
             font-size: 3.5rem;
             font-weight: 800;
             color: #fff;
             line-height: 1.2;
-            margin-bottom: 20px;
             letter-spacing: -1px;
             .highlight {
                 background: $primary-gradient;
@@ -97,12 +96,12 @@ $dark-bg: #050509;
         .hero-subtitle {
             font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
             line-height: 1.6;
         }
     }
     .hero-btns {
         display: flex;
+        flex-wrap: wrap;
         gap: 20px;
         .btn-primary,
         .btn-secondary {
@@ -129,6 +128,35 @@ $dark-bg: #050509;
             &:hover {
                 background: rgba(255, 255, 255, 0.1);
             }
+        }
+    }
+}
+@media (max-width: 600px) {
+    .liquid-hero {
+        flex-direction: column;
+        padding: 20px;
+        .glass-container {
+        }
+        .glass-content {
+            .hero-title {
+                font-size: 2.5rem;
+                .highlight {
+                }
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+        }
+        .hero-btns {
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+            .btn-primary {
+            }
+        }
+        .btn-secondary {
         }
     }
 }

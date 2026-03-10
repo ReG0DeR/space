@@ -1,3 +1,97 @@
+/*RESET*/
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:focus,
+:active {
+  outline: none;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+nav,
+footer,
+header,
+aside {
+  display: block;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-size: 100%;
+  line-height: 1;
+  font-size: 16px;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+input,
+button,
+textarea {
+  font-family: inherit;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+address {
+  font-style: normal;
+}
+
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: 400;
+}
+
 body {
   margin: 0;
   background: black;
@@ -9,22 +103,19 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -1;
 }
 
 .liquid-hero {
-  margin: 20px;
   padding: 40px;
   position: relative;
-  width: 100%;
   display: flex;
   align-items: center;
   overflow: hidden;
   font-family: "Poppins", sans-serif;
+  width: fit-content;
 }
 .liquid-hero .glass-container {
   position: relative;
-  width: 90%;
   max-width: 600px;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 30px;
@@ -73,13 +164,13 @@ canvas {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 20px;
 }
 .liquid-hero .glass-content .hero-title {
   font-size: 3.5rem;
   font-weight: 800;
   color: #fff;
   line-height: 1.2;
-  margin-bottom: 20px;
   letter-spacing: -1px;
 }
 .liquid-hero .glass-content .hero-title .highlight {
@@ -91,11 +182,11 @@ canvas {
 .liquid-hero .glass-content .hero-subtitle {
   font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 40px;
   line-height: 1.6;
 }
 .liquid-hero .hero-btns {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
 }
 .liquid-hero .hero-btns .btn-primary,
@@ -123,4 +214,22 @@ canvas {
 }
 .liquid-hero .hero-btns .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 600px) {
+  .liquid-hero {
+    flex-direction: column;
+    padding: 20px;
+  }
+  .liquid-hero .glass-content .hero-title {
+    font-size: 2.5rem;
+  }
+  .liquid-hero .glass-content .hero-subtitle {
+    font-size: 1rem;
+  }
+  .liquid-hero .hero-btns .btn-primary,
+  .liquid-hero .hero-btns .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
 }
