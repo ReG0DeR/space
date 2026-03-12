@@ -113,7 +113,7 @@ canvas {
   overflow: hidden;
   font-family: "Poppins", sans-serif;
   width: fit-content;
-  display: none;
+  display: none !important;
 }
 .liquid-hero .glass-container {
   position: relative;
