@@ -1,0 +1,77 @@
+// Design tokens — the single source of truth. Use var(--token) everywhere.
+:root {
+    // Surfaces
+    --c-bg: #050509;
+    --c-bg-elev: #0b0d16;
+    --c-panel: rgba(12, 14, 24, 0.72);
+    --c-panel-strong: rgba(12, 14, 24, 0.9);
+    --c-glass: rgba(255, 255, 255, 0.03);
+    --c-surface: rgba(255, 255, 255, 0.04);
+    --c-surface-2: rgba(255, 255, 255, 0.08);
+    --c-border: rgba(255, 255, 255, 0.08);
+    --c-border-strong: rgba(255, 255, 255, 0.18);
+
+    // Text
+    --c-text: #f5f7fa;
+    --c-text-muted: rgba(245, 247, 250, 0.74);
+    --c-text-dim: rgba(245, 247, 250, 0.52);
+
+    // Brand
+    --c-accent: #4facfe;
+    --c-accent-2: #00f2fe;
+    --c-sith: #ff416c;
+    --c-sith-2: #ff4b2b;
+    --c-success: #3ddc97;
+    --c-warning: #ffb547;
+    --c-danger: #ff416c;
+    --c-info: #4facfe;
+
+    --grad-primary: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    --grad-sith: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
+
+    // Typography (all three families support Cyrillic)
+    --font-display: "Exo 2", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+    // Radii
+    --r-xs: 6px;
+    --r-sm: 10px;
+    --r-md: 16px;
+    --r-lg: 24px;
+    --r-xl: 30px;
+    --r-pill: 999px;
+
+    // Spacing
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+
+    // Shadows / effects
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.37);
+    --glow-accent: 0 0 24px rgba(79, 172, 254, 0.35);
+    --glow-sith: 0 0 24px rgba(255, 65, 108, 0.4);
+
+    // Motion
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 0.15s;
+    --dur: 0.3s;
+    --dur-slow: 0.6s;
+
+    // Layout
+    --container: 1200px;
+    --gutter: clamp(16px, 4vw, 40px);
+    --header-h: 72px;
+    --z-scene: 0;
+    --z-content: 1;
+    --z-header: 50;
+    --z-overlay: 90;
+    --z-toast: 100;
+    --z-loader: 200;
+}
