@@ -1,0 +1,14 @@
+{
+  "name": "cosmo-ops",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cosmo Ops — командний центр Імперії: 3D-сцена Землі та інтерактивні розділи.",
+  "scripts": {
+    "build:css": "sass --no-source-map --style=expanded assets/css/style.scss assets/css/style.css",
+    "watch:css": "sass --no-source-map --style=expanded --watch assets/css/style.scss assets/css/style.css",
+    "serve": "npx http-server -c-1 -p 8080 ."
+  },
+  "devDependencies": {
+    "sass": "1.80.6"
+  }
+}

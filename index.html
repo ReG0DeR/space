@@ -3,25 +3,203 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D Earth - Smooth, Volumetric, Starry</title>
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <title>Cosmo Ops — командний центр Імперії</title>
+    <meta
+      name="description"
+      content="Cosmo Ops — фан-проєкт командного центру Імперії: 3D-Земля, аналіз цілей, імперський флот, хроніка операцій, кодекс Сітхів і рекрутинг."
+    />
+    <meta name="theme-color" content="#050509" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cosmo Ops — командний центр Імперії" />
+    <meta
+      property="og:description"
+      content="Галактика під твоїм контролем. Аналізуй цілі, вивчай флот і вступай до лав Імперії."
+    />
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;600;700&display=swap"
+    />
     <link rel="stylesheet" href="assets/css/style.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
   </head>
   <body>
-    <section class="liquid-hero">
-      <div class="glass-container">
-        <div class="glass-content">
-          <h1 class="hero-title">Галактика під <span class="highlight">твоїм контролем</span></h1>
-          <p class="hero-subtitle">Відчуй міць Темної сторони. Аналізуй цілі для головного калібру та тримай сектори у страху. Хай прибуде з тобою Сила (або ні).</p>
-          <div class="hero-btns">
-            <a href="#explore" class="btn-primary">Навести гармати</a>
-            <a href="#about" class="btn-secondary">Кодекс Сітхів</a>
-          </div>  
-        </div>
+    <a class="skip-link" href="#main">Перейти до змісту</a>
+
+    <!-- 3D scene: scene.js mounts the WebGL canvas here -->
+    <div class="scene" id="scene" aria-hidden="true"></div>
+    <div class="space-fallback" aria-hidden="true"></div>
+
+    <div class="loader" id="loader" role="status" aria-live="polite">
+      <div class="loader__ring" aria-hidden="true"></div>
+      <p class="loader__label">
+        Ініціалізація систем <span class="loader__value" id="loader-value">0%</span>
+      </p>
+      <div class="loader__bar" aria-hidden="true"><span class="loader__fill" id="loader-fill"></span></div>
+    </div>
+
+    <!-- @region:header (owner: foundation) -->
+    <header class="site-header" id="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="#home" aria-label="Cosmo Ops — на початок">COSMO OPS</a>
+        <nav class="site-nav" id="site-nav" aria-label="Головна навігація">
+          <ul class="site-nav__list">
+            <li><a class="site-nav__link" href="#explore">Цілі</a></li>
+            <li><a class="site-nav__link" href="#fleet">Флот</a></li>
+            <li><a class="site-nav__link" href="#missions">Операції</a></li>
+            <li><a class="site-nav__link" href="#about">Кодекс</a></li>
+            <li><a class="site-nav__link" href="#quiz">Тест</a></li>
+            <li><a class="site-nav__link" href="#faq">FAQ</a></li>
+          </ul>
+        </nav>
+        <a class="btn btn--primary btn--sm site-header__cta" href="#join">Вступити</a>
       </div>
-    </section>
-    <script src="assets/js/three.min.js"></script>
-    <script src="assets/js/OrbitControls.js"></script>
-    <script src="assets/js/script.js"></script>
+    </header>
+    <!-- @endregion:header -->
+
+    <main id="main">
+      <!-- @region:hero (owner: foundation) -->
+      <section class="hero" id="home" aria-labelledby="hero-title">
+        <div class="container hero__inner">
+          <div class="hero__card">
+            <h1 class="hero__title" id="hero-title">
+              Галактика під <span class="text-gradient">твоїм контролем</span>
+            </h1>
+            <p class="hero__subtitle">
+              Відчуй міць Темної сторони. Аналізуй цілі для головного калібру та тримай сектори у страху. Хай
+              прибуде з тобою Сила (або ні).
+            </p>
+            <div class="hero__btns">
+              <a href="#explore" class="btn btn--primary">Навести гармати</a>
+              <a href="#about" class="btn btn--secondary">Кодекс Сітхів</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- @endregion:hero -->
+
+      <section class="section" id="explore" aria-labelledby="explore-title">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">01 · Система наведення</p>
+            <h2 class="section-title" id="explore-title">Навести <span class="text-sith">гармати</span></h2>
+            <p class="section-lead">
+              Обери ціль у секторі, проаналізуй оборону й розрахуй постріл головного калібру. Рада Моффів чекає
+              звіту.
+            </p>
+          </header>
+          <!-- @slot:targets -->
+        </div>
+      </section>
+
+      <section class="section section--stats" id="stats" aria-labelledby="stats-title">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">02 · Імперія в цифрах</p>
+            <h2 class="section-title" id="stats-title">Міць, яку <span class="text-gradient">не сховаєш</span></h2>
+          </header>
+          <!-- @slot:stats -->
+        </div>
+      </section>
+
+      <section class="section" id="fleet" aria-labelledby="fleet-title">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">03 · Флот</p>
+            <h2 class="section-title" id="fleet-title">Імперський <span class="text-gradient">флот</span></h2>
+            <p class="section-lead">
+              Від верткого TIE до флагмана «Виконавець». Фільтруй за класом і відкривай технічні досьє.
+            </p>
+          </header>
+          <!-- @slot:fleet -->
+        </div>
+      </section>
+
+      <section class="section" id="missions" aria-labelledby="missions-title">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">04 · Журнал операцій</p>
+            <h2 class="section-title" id="missions-title">Хроніка <span class="text-gradient">операцій</span></h2>
+            <p class="section-lead">
+              Перемоги, провали та справи під грифом «цілком таємно». Архів відкрито для офіцерів з допуском.
+            </p>
+          </header>
+          <!-- @slot:missions -->
+        </div>
+      </section>
+
+      <section class="section" id="about" aria-labelledby="about-title">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">05 · Кодекс</p>
+            <h2 class="section-title" id="about-title">Кодекс <span class="text-sith">Сітхів</span></h2>
+            <p class="section-lead">Мир — це брехня. Є лише пристрасть. Решта — деталі для учнів.</p>
+          </header>
+          <!-- @slot:codex -->
+        </div>
+      </section>
+
+      <section class="section" id="quiz" aria-labelledby="quiz-title">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">06 · Тест на лояльність</p>
+            <h2 class="section-title" id="quiz-title">Хто ти <span class="text-gradient">в Імперії</span>?</h2>
+            <p class="section-lead">Кілька запитань — і відділ кадрів визначить твоє місце в ієрархії.</p>
+          </header>
+          <!-- @slot:quiz -->
+        </div>
+      </section>
+
+      <section class="section" id="join" aria-labelledby="join-title">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">07 · Рекрутинг</p>
+            <h2 class="section-title" id="join-title">Вступай до <span class="text-sith">лав Імперії</span></h2>
+            <p class="section-lead">Заповни анкету — і отримай особисте посвідчення офіцера Cosmo Ops.</p>
+          </header>
+          <!-- @slot:join -->
+        </div>
+      </section>
+
+      <section class="section" id="faq" aria-labelledby="faq-title">
+        <div class="container">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">08 · Брифінг</p>
+            <h2 class="section-title" id="faq-title">Часті <span class="text-gradient">питання</span></h2>
+          </header>
+          <!-- @slot:faq -->
+        </div>
+      </section>
+    </main>
+
+    <!-- @region:footer (owner: foundation) -->
+    <footer class="site-footer">
+      <div class="container">
+        <p class="site-footer__disclaimer">
+          Фан-проєкт. Не пов'язаний з Lucasfilm Ltd. чи The Walt Disney Company.
+        </p>
+      </div>
+    </footer>
+    <!-- @endregion:footer -->
+
+    <div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+    <script defer src="assets/js/core/utils.js"></script>
+    <script defer src="assets/js/sections/targets.js"></script>
+    <script defer src="assets/js/sections/stats.js"></script>
+    <script defer src="assets/js/sections/fleet.js"></script>
+    <script defer src="assets/js/sections/missions.js"></script>
+    <script defer src="assets/js/sections/codex.js"></script>
+    <script defer src="assets/js/sections/quiz.js"></script>
+    <script defer src="assets/js/sections/join.js"></script>
+    <script defer src="assets/js/sections/faq.js"></script>
+    <script defer src="assets/js/ui/nav.js"></script>
+    <script defer src="assets/js/three.min.js"></script>
+    <script defer src="assets/js/OrbitControls.js"></script>
+    <script defer src="assets/js/scene.js"></script>
   </body>
 </html>

@@ -1,0 +1,4 @@
+// Abstracts: no CSS output here — only mixins/functions/SCSS constants.
+// Usage in any partial:  @use "../abstracts" as *;
+@forward "breakpoints";
+@forward "mixins";

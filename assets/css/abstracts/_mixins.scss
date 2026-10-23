@@ -1,0 +1,23 @@
+@use "sass:map";
+@use "breakpoints" as *;
+
+// @include mq(md) { ... }      → min-width: 768px
+@mixin mq($key) {
+    @media (min-width: map.get($breakpoints, $key)) {
+        @content;
+    }
+}
+
+// @include mq-down(md) { ... } → max-width: 767.98px
+@mixin mq-down($key) {
+    @media (max-width: map.get($breakpoints, $key) - 0.02px) {
+        @content;
+    }
+}
+
+// Animations only for people who did not ask for reduced motion.
+@mixin motion {
+    @media (prefers-reduced-motion: no-preference) {
+        @content;
+    }
+}
